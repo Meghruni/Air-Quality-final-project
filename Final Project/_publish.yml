@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: a06eaab9-7fdc-44cd-bf9d-6ce090fe9264
+      url: 'https://hovhannes.quarto.pub/final-project'

@@ -1,0 +1,59 @@
+---
+title: "Home"
+---
+
+## How air purity can be changed depending on certain conditions
+
+### Air Quality
+
+Also we know air quality is a big matter not only for Armenia, but also for the entire world. And bcs of that I decided to make a project abt this. Nowadays we know the air is very polluted and we have to do smth for us, for our health. Bcs of that we have to know a little abt this topics:
+
+-   What is a PM?
+
+-   What can we do to make the air clearer?
+
+    \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+And now lets talk abt the PM
+
+It refers to a mixture of solid particles and liquid droplets found in the air. These particles can vary in size, composition, and origin, and they can be classified based on their aerodynamic diameter:
+
+1.  **PM10**: Particles with a diameter of 10 micrometers (µm) or smaller. These particles are small enough to be inhaled into the respiratory system and can include dust, pollen, mold spores, and some larger particles from combustion processes.
+
+2.  **PM2.5**: Particles with a diameter of 2.5 micrometers (µm) or smaller. These are fine particles that can penetrate deep into the lungs and even enter the bloodstream. They often originate from combustion sources such as vehicle engines, power plants, and wildfires, as well as from industrial processes and certain chemical reactions in the atmosphere.
+
+3.  **PM1.0**: Particles with a diameter of 1.0 micrometer (µm) or smaller. These are ultrafine particles that can penetrate deeply into the respiratory system and pose significant health risks due to their ability to reach the smallest airways and potentially enter the bloodstream.
+
+    \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+    Let's watch some graphs abt pm1.0 depending on temperature
+
+    ```{r warning=FALSE}
+    data <- read.csv(file = "/Users/user/Desktop/Final Project/vazgen.csv")
+    library(ggplot2)
+    data |>
+      ggplot(mapping = aes(x = temperature, y = pm1, color = as.factor(direction)))+
+      geom_point() +  
+      facet_wrap(~direction , strip.position="bottom") +
+      theme(legend.position="none")+
+      scale_y_log10()+
+      labs(title = "Number of PM1.0 in the air depending on Temperature",
+        x  = "Temperature(°C)",
+           y = "PM1.0")
+    ```
+
+    \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+    There' s also 1 big matter:
+
+    What can we do to make the air clearer?
+
+    -   **Plant Trees**: Trees and vegetation help absorb pollutants and improve air quality. Support tree planting initiatives in your community.
+
+    -   **Support Clean Energy**: Advocate for and support the use of renewable energy sources like wind, solar, and hydroelectric power.
+
+    -   **Reduce Wood Burning**: Avoid using wood-burning stoves or fireplaces, especially during high pollution days.
+
+    -   **Drive Efficiently**: Avoid aggressive driving (rapid acceleration and braking), which can increase fuel consumption and emissions.
+
+    -   **Reduce Waste**: Properly dispose of waste and recycle to minimize landfill emissions and reduce methane production.

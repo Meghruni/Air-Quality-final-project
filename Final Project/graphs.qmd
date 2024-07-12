@@ -1,0 +1,189 @@
+---
+title: "Data Analysis"
+---
+
+## Graphs
+
+Initially lets upload the data.
+
+```{r}
+data <- read.csv(file = "/Users/user/Desktop/Final Project/vazgen.csv")
+
+```
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+And now lets call libraries, which will help us to create graphs
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+```
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+And finally its time for graphs
+
+Now we know what is PM, and now lets watch some graphs abt it depending on temperature\
+
+```{r warning=FALSE}
+data |>
+  ggplot(mapping = aes(x = temperature, y = pm10, color = as.factor(direction)))+
+  geom_point() +  
+  facet_wrap(~direction , strip.position="bottom") +
+  theme(legend.position="none")+
+  scale_y_log10()+
+  labs(title = "Number of PM10 in the air depending on Temperature",
+    x  = "Temperature(°C)",
+       y = "PM10")
+```
+
+```{r warning=FALSE}
+library(plotly)
+p <- data |>
+ filter(direction == "N" | direction == "S" |direction == "E"|direction == "W")|>
+  ggplot(mapping = aes(x = temperature, y = pm10,size = pm10, color = as.factor(direction))) +
+  geom_point(alpha = 0.3, show.legend = FALSE)+
+  scale_size(range = c(2, 12)) +
+  facet_wrap(~direction)+
+  theme(legend.position="none")+
+  geom_smooth(color = "#e9ecef")+
+  labs(
+    title = "Quantity of PM10 in the air",
+    x = "Temperature(°C)",
+    y = "PM10"
+  ) 
+ggplotly(p)
+```
+
+```{r warning=FALSE}
+m <- data |>
+ filter(direction == "NE" | direction == "SE" |direction == "SW"|direction == "NW")|>
+  ggplot(mapping = aes(x = temperature, y = pm10,size = pm10, color = as.factor(direction))) +
+  geom_point(alpha = 0.2, show.legend = FALSE)+
+  scale_size(range = c(2, 12)) +
+  facet_wrap(~direction) +
+  theme(legend.position="none")+
+  geom_smooth(color = "#e9ecef")+
+  labs(
+    title = "Quantity of PM10 in the air",
+    x = "Temperature(°C)",
+    y = "PM10"
+  ) 
+ggplotly(m)
+```
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+The 4th graph is abt the temperature during the year
+
+```{r warning=FALSE}
+
+hist <- data |>
+  
+  select(temperature, pressure)|>
+  ggplot(mapping = aes(x = temperature, fill = temperature))+
+  geom_histogram(binwidth = 0.3,color = "white", fill = "#1b9aaa")+
+
+scale_x_continuous(breaks = seq(-20, 50, by = 2))+
+scale_y_continuous(breaks = seq(0, 500, by = 20))+
+  labs(title = "Temperature in Armenia",
+       x = "Temperature(°C)",
+       y = "Count"
+       )
+ggplotly(hist)
+```
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+This graph is like the previous one, but this one is abt the pressure
+
+```{r warning=FALSE}
+hist2 <- data |>
+  ggplot(mapping = aes(x = pressure, fill = pressure))+
+  geom_histogram(color = "#d9d9d9", fill = "#3c6e71", bins = 30)+
+  theme_minimal()+
+  theme_light()+
+scale_x_continuous(breaks = seq(600, 900, by = 25))+
+scale_y_continuous(breaks = seq(0, 10000, by = 1000))+ 
+  labs(title = "Pressure in Armenia",
+       x = "Pressure",
+       y = "Count")
+ggplotly(hist2)
+```
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+This one is a density graph, which depends on direction
+
+```{r}
+data|>
+  ggplot(mapping = aes(x = direction))+
+  geom_density(aes(fill=factor(direction), alpha = 1))+
+  scale_y_continuous(breaks = seq(0, 2, by = 0.1))+
+  labs(title = "The Density of Directions",
+       x = "Direction",
+       y = "Density",
+       alpha = "Alpha",
+       fill = "Colors of Directions")
+```
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+Here's another density graph depending on rain
+
+```{r warning=FALSE}
+data |>
+  arrange(rain)|>
+  select(time,rain)|>
+  ggplot(mapping = aes(x = rain))+
+  labs(x = "Rain",
+       y = "Density",
+       alpha = "Alpha",
+       fill = "Rain(mm)")+
+  ggtitle("The density of the rain")+
+  geom_density(aes(fill=factor(rain), alpha = 1))+
+  scale_x_continuous(breaks = seq(0, 5, by = 0.25))+
+  scale_y_continuous(breaks = seq(0, 5, by = 1))
+```
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+Here's a box plot abt the speed of directions
+
+```{r}
+data |>
+  filter(speed > 0.1 ) |>
+  group_by(direction)|>
+  select(direction, speed)|>
+  ggplot(mapping = aes(x = direction, y = speed))+
+  geom_boxplot(alpha = 0.28, color = "#1b9aaa",fill = "#06d6a0")+
+  labs(title = "Speed of Directions in November",
+       x = "Direction",
+       y = "Speed")+
+scale_y_continuous(breaks = seq(0, 50, by = 1))
+```
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+And the last one.
+
+A correlogram of our data
+
+```{r}
+library(ggcorrplot)
+
+database <- na.omit(data)
+numeric_columns <- sapply(database, is.numeric)
+corr <- round(cor(database[, numeric_columns]), 1)
+
+ggcorrplot(corr, hc.order = TRUE, 
+           type = "lower", 
+           lab = TRUE, 
+           lab_size = 3, 
+           method = "circle", 
+            colors = c("#a873e8", "#ebc2ff", "#56d1dc"),
+           title = "Correlogram of Our Dataset", 
+           ggtheme = theme_bw)
+```

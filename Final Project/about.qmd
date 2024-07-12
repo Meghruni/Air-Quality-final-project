@@ -1,0 +1,11 @@
+---
+title: "About"
+---
+
+## About webpage
+
+This webpage is my final project for a workshop in TUMO called "Discovering Climate Change with Data Science" led by Christopher Patvakanian. Here u can find some information and graphs abt air quality.
+
+## About me
+
+Hi :) My name is Hovhannes Meghruni. I'm a college student who enjoys coding in my free time. I'm learning python and R currently and hope to broaden my knowledge about programming languages.
